@@ -1,0 +1,25 @@
+version: "3"
+services:
+  api:
+    image: tejatanush/fastapi
+    depends_on: 
+      - postgres
+    ports:
+      #-<port on localhost>:<port on container>
+      - 8000:8000
+    volumes:
+      - .:/usr/src/app
+
+    env_file:
+      - ./.env
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=fastapi
+    
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+volumes:
+  postgres-db:
